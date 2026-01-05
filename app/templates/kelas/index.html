@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Daftar Kelas - SIPKR{% endblock %}
+{% block title %}Daftar Mata Kuliah - SIPKR{% endblock %}
 {% block page_title %}Manajemen Mata Kuliah{% endblock %}
 
 {% block content %}
@@ -11,8 +11,8 @@
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th { text-align: left; padding: 12px 16px; border-bottom: 2px solid #F1F5F9; color: var(--muted); font-size: 13px; text-transform: uppercase; }
     td { padding: 16px; border-bottom: 1px solid #F1F5F9; font-size: 14px; }
-    .badge-code { background: #E0E7FF; color: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 12px; font-family: monospace; }
-    .actions { display: flex; gap: 10px; }
+    .badge-id { background: #E0E7FF; color: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 12px; }
+    .actions { display: flex; gap: 10px; justify-content: center; } /* Center action buttons */
     .btn-icon { border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: .2s; }
     .btn-edit { color: #F59E0B; background: #FEF3C7; }
     .btn-delete { color: #EF4444; background: #FEE2E2; }
@@ -27,32 +27,32 @@
     <table>
         <thead>
             <tr>
-                <th>Kode MK</th>
-                <th>Nama Mata Kuliah</th>
-                <th>SKS</th>
-                <th>Semester</th>
-                <th style="text-align: center;">Aksi</th>
+                <th>KODE MK</th>
+                <th>NAMA MATA KULIAH</th>
+                <th>PRODI</th>
+                <th>SKS / SEMESTER</th>
+                <th style="text-align: center;">AKSI</th>
             </tr>
         </thead>
         <tbody>
             {% for k in data %}
             <tr>
-                <td><span class="badge-code">{{ k.kode_mk }}</span></td>
+                <td><span class="badge-id">{{ k.kode_mk }}</span></td>
                 
                 <td style="font-weight: 600;">{{ k.nama_mk }}</td>
                 
-                <td>{{ k.sks }} SKS</td>
+                <td>{{ k.prodi }}</td>
                 
-                <td>Semester {{ k.semester }}</td>
+                <td>{{ k.sks }} SKS - Sem {{ k.semester }}</td>
                 
                 <td>
-                    <div class="actions" style="justify-content: center;">
+                    <div class="actions">
                         <a href="{{ url_for('web.kelas_edit', id=k.id) }}" class="btn-icon btn-edit" title="Edit">
                             <i class="material-icons" style="font-size: 18px;">edit</i>
                         </a>
                         
-                        <form action="{{ url_for('web.kelas_delete', id=k.id) }}" method="POST" onsubmit="return confirm('Hapus mata kuliah ini?')">
-                            <button class="btn-icon btn-delete" title="Hapus">
+                        <form action="{{ url_for('web.kelas_delete', id=k.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-icon btn-delete" title="Hapus" onclick="return confirm('Yakin ingin menghapus mata kuliah ini?')">
                                 <i class="material-icons" style="font-size: 18px;">delete</i>
                             </button>
                         </form>
