@@ -1,12 +1,134 @@
-{% extends "base.html" %}
-{% block title %}Login SIPKR{% endblock %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | SIPKR</title>
 
-{% block content %}
-<h2>Login SIPKR</h2>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<form method="post">
-    <input type="text" name="username" placeholder="username"><br><br>
-    <input type="password" name="password" placeholder="password"><br><br>
-    <button type="submit">Login</button>
-</form>
-{% endblock %}
+<style>
+:root{--primary:#1E3A8A;--bg:#F8FAFC;--text:#1E293B;--muted:#64748B;--border:#CBD5E1;--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+min-height:100vh;display:flex;align-items:center;justify-content:center;
+font-family:Roboto,sans-serif;background:var(--bg);
+background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231E3A8A' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/svg%3E");
+padding:20px;color:var(--text)
+}
+.card{
+width:100%;max-width:440px;background:var(--white);
+border-radius:16px;overflow:hidden;
+box-shadow:0 10px 40px rgba(30,58,138,.15);
+border-top:5px solid var(--primary)
+}
+.hero{
+height:120px;background:url('https://sfile.chatglm.cn/images-ppt/75035483faf1.jpg') center/cover;
+position:relative
+}
+.hero::after{
+content:"";position:absolute;inset:0;
+background:linear-gradient(to bottom,rgba(30,58,138,.7),rgba(30,58,138,.9))
+}
+.logo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.logo span{
+width:60px;height:60px;border-radius:50%;background:#fff;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,.25)
+}
+.logo i{font-size:32px;color:var(--primary)}
+.content{padding:30px}
+.header{text-align:center;border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
+.header h1{font-family:"Playfair Display",serif;font-size:26px;color:var(--primary)}
+.header p{font-size:14px;color:var(--muted);font-style:italic}
+.group{margin-bottom:18px}
+label{font-size:13px;font-weight:500;margin-bottom:6px;display:block}
+.input{
+display:flex;align-items:center;border:1px solid var(--border);
+border-radius:8px;padding:0 12px
+}
+.input i{font-size:20px;color:var(--muted)}
+.input input{flex:1;border:none;padding:12px;font-size:14px;outline:none}
+.toggle{cursor:pointer}
+.error{
+background:#FEE2E2;color:#991B1B;
+padding:10px;border-radius:8px;
+font-size:13px;margin-bottom:16px;text-align:center
+}
+.action{display:flex;justify-content:flex-end;font-size:13px;margin:6px 0 22px}
+.action a{color:var(--primary);font-weight:500;text-decoration:none}
+button{
+width:100%;padding:14px;border:none;border-radius:8px;
+background:var(--primary);color:#fff;
+font-size:15px;font-weight:700;cursor:pointer
+}
+button:hover{background:#1e40af}
+.footer{margin-top:24px;text-align:center;font-size:13px;color:var(--muted)}
+.footer a{color:var(--primary);font-weight:600;text-decoration:none}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div class="hero">
+    <div class="logo"><span><i class="material-icons">school</i></span></div>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <h1>Sistem Informasi Penjadwalan</h1>
+      <p>Kelas & Ruangan Universitas</p>
+    </div>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+
+      <div class="group">
+        <label>Email Institusi</label>
+        <div class="input">
+          <i class="material-icons">email</i>
+          <input type="text" name="username" placeholder="nama@universitas.ac.id" required>
+        </div>
+      </div>
+
+      <div class="group">
+        <label>Kata Sandi</label>
+        <div class="input">
+          <i class="material-icons">lock</i>
+          <input type="password" name="password" id="password" placeholder="Masukkan kata sandi" required>
+          <i class="material-icons toggle" onclick="togglePwd(this)">visibility_off</i>
+        </div>
+      </div>
+
+      <div class="action">
+        <a href="#">Lupa kata sandi?</a>
+      </div>
+
+      <button type="submit">Masuk ke Sistem</button>
+    </form>
+
+    <div class="footer">
+      Belum memiliki akun? <a href="#">Hubungi Administrator</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePwd(el){
+  const pwd=document.getElementById('password')
+  if(pwd.type==="password"){
+    pwd.type="text"
+    el.textContent="visibility"
+  }else{
+    pwd.type="password"
+    el.textContent="visibility_off"
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | SIPKR{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Selamat datang di Sistem Informasi Penjadwalan Kelas & Ruangan.</p>
+
+<div class="cards">
+  <div class="card">Total Dosen</div>
+  <div class="card">Total Kelas</div>
+  <div class="card">Total Ruangan</div>
+  <div class="card">Jadwal Aktif</div>
+</div>
+
+<style>
+.cards{
+margin-top:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:16px
+}
+.card{
+background:#fff;padding:20px;
+border-radius:12px;
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+font-weight:600
+}
+</style>
+{% endblock %}

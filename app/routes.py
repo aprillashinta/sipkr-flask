@@ -1,16 +1,19 @@
-from app import app
+from flask import Blueprint, render_template, redirect, url_for, session
 from app.controller import AuthController
 
-@app.route('/')
-def index():
-    return "SIPKR Flask is running"
+web = Blueprint('web', __name__)
 
-@app.route('/login', methods=['GET', 'POST'])
+@web.route('/login', methods=['GET', 'POST'])
 def login():
     return AuthController.login()
 
-from flask import render_template
-
-@app.route('/dashboard')
+@web.route('/dashboard')
 def dashboard():
+    if not session.get('user'):
+        return redirect(url_for('web.login'))
     return render_template('dashboard.html')
+
+
+@web.route('/')
+def index():
+    return 'SIPKR Flask is running'

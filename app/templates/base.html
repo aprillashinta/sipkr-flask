@@ -1,14 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>{% block title %}SIPKR{% endblock %}</title>
+<meta charset="UTF-8">
+<title>{% block title %}SIPKR{% endblock %}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+:root{
+--primary:#1E3A8A;--primary-dark:#1E40AF;
+--bg:#F1F5F9;--white:#fff;
+--text:#0F172A;--muted:#64748B;
+--sidebar-w:270px
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text)}
+
+.app{display:flex;min-height:100vh}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+width:var(--sidebar-w);
+background:linear-gradient(180deg,var(--primary),var(--primary-dark));
+color:#fff;display:flex;flex-direction:column
+}
+
+.brand{
+display:flex;align-items:center;gap:14px;
+padding:22px;border-bottom:1px solid rgba(255,255,255,.15)
+}
+.brand img{
+width:44px;height:44px;border-radius:10px;
+background:#fff;padding:6px
+}
+.brand h1{font-size:18px;font-weight:700;line-height:1.2}
+.brand span{font-size:12px;opacity:.85}
+
+.menu{padding:14px;flex:1}
+.menu-section{
+margin:14px 0 6px;
+padding-left:16px;
+font-size:11px;
+letter-spacing:.5px;
+opacity:.7
+}
+
+.menu a{
+display:flex;align-items:center;gap:14px;
+padding:12px 16px;margin-bottom:6px;
+border-radius:10px;
+color:#fff;text-decoration:none;
+font-size:14px;font-weight:500;
+transition:.2s
+}
+.menu a i{font-size:20px}
+.menu a:hover,
+.menu a.active{
+background:rgba(255,255,255,.18)
+}
+
+/* ===== MAIN ===== */
+.main{flex:1;display:flex;flex-direction:column}
+
+/* TOPBAR */
+.topbar{
+height:64px;background:var(--white);
+display:flex;align-items:center;justify-content:space-between;
+padding:0 26px;
+box-shadow:0 2px 10px rgba(0,0,0,.06)
+}
+.topbar .title{font-weight:600}
+.topbar .user{font-size:14px;color:var(--muted)}
+
+/* CONTENT */
+.content{padding:30px}
+</style>
 </head>
+
 <body>
+<div class="app">
 
-<h1>BASE TEMPLATE LOADED</h1>
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="brand">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="SIPKR">
+    <div>
+      <h1>SIPKR</h1>
+      <span>Penjadwalan Kelas & Ruangan</span>
+    </div>
+  </div>
 
-{% block content %}
-{% endblock %}
+  <nav class="menu">
 
+    <a href="{{ url_for('web.dashboard') }}" class="active">
+      <i class="material-icons">dashboard</i> Dashboard
+    </a>
+
+    <div class="menu-section">MASTER DATA</div>
+
+    <a href="#">
+      <i class="material-icons">person</i> Dosen
+    </a>
+    <a href="#">
+      <i class="material-icons">class</i> Kelas
+    </a>
+    <a href="#">
+      <i class="material-icons">meeting_room</i> Ruangan
+    </a>
+
+    <div class="menu-section">OPERASIONAL</div>
+
+    <a href="#">
+      <i class="material-icons">schedule</i> Jadwal
+    </a>
+
+    <div class="menu-section">SISTEM</div>
+
+    <a href="#">
+      <i class="material-icons">logout</i> Logout
+    </a>
+
+  </nav>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+  <header class="topbar">
+    <div class="title">{% block page_title %}Dashboard{% endblock %}</div>
+    <div class="user">Admin Akademik</div>
+  </header>
+
+  <section class="content">
+    {% block content %}{% endblock %}
+  </section>
+</div>
+
+</div>
 </body>
 </html>
