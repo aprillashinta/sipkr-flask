@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session
-from app.controller import AuthController, DosenController, KelasController
+from app.controller import AuthController, DosenController, KelasController, JadwalController
 
 # Inisialisasi Blueprint dengan nama 'web'
 web = Blueprint('web', __name__)
@@ -98,3 +98,11 @@ def kelas_delete(id):
         return redirect(url_for('web.login'))
         
     return KelasController.delete(id)
+
+@web.route('/jadwal')
+def jadwal_index():
+    return JadwalController.index()
+
+@web.route('/jadwal/tambah', methods=['GET', 'POST'])
+def jadwal_create():
+    return JadwalController.create()
