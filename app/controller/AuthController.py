@@ -9,6 +9,6 @@ def login():
 
     if username == 'admin' and password == 'admin':
         session['user'] = username
-        return redirect(url_for('web.dashboard'))  # INI FIX UTAMA
+        return redirect(url_for('web.dashboard'))
 
     return render_template('login.html', error='Username atau password salah')
