@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session
-from app.controller import AuthController, DosenController
+from app.controller import AuthController, DosenController, KelasController
 
 # Inisialisasi Blueprint dengan nama 'web'
 web = Blueprint('web', __name__)
@@ -65,3 +65,36 @@ def dosen_delete(id):
         return redirect(url_for('web.login'))
         
     return DosenController.delete(id)
+
+# 1. READ - Menampilkan daftar kelas
+@web.route('/kelas')
+def kelas_index():
+    if not session.get('user'):
+        return redirect(url_for('web.login'))
+    
+    # Memanggil fungsi index() dari KelasController.py
+    return KelasController.index()
+
+# 2. CREATE - Form tambah kelas dan Proses simpan
+@web.route('/kelas/tambah', methods=['GET', 'POST'])
+def kelas_create():
+    if not session.get('user'):
+        return redirect(url_for('web.login'))
+        
+    return KelasController.create()
+
+# 3. UPDATE - Form edit kelas dan Proses update
+@web.route('/kelas/edit/<int:id>', methods=['GET', 'POST'])
+def kelas_edit(id):
+    if not session.get('user'):
+        return redirect(url_for('web.login'))
+        
+    return KelasController.edit(id)
+
+# 4. DELETE - Proses hapus kelas
+@web.route('/kelas/hapus/<int:id>', methods=['POST'])
+def kelas_delete(id):
+    if not session.get('user'):
+        return redirect(url_for('web.login'))
+        
+    return KelasController.delete(id)
