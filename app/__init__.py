@@ -10,10 +10,18 @@ app.secret_key = 'sipkr-secret'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app.model import user
-from app.model import dosen
-from app.model import kelas
-from app.model import ruangan
-from app.model import jadwal
+from app.model import user, dosen, kelas, ruangan, jadwal
 
-from app import routes
+from app.controller.WebController import web
+from app.controller.DosenController import dosen_bp
+from app.controller.DosenController import dosen_bp
+from app.controller.KelasController import kelas_bp
+from app.controller.RuanganController import ruangan_bp
+from app.controller.JadwalController import jadwal_bp
+
+# Registrasi blueprint ke aplikasi
+app.register_blueprint(dosen_bp)
+app.register_blueprint(kelas_bp)
+app.register_blueprint(ruangan_bp)
+app.register_blueprint(jadwal_bp)
+app.register_blueprint(web)

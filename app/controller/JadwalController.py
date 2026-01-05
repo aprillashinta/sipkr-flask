@@ -1,6 +1,10 @@
 from app.model.jadwal import Jadwal
 from app import db, response
-from flask import request
+from flask import Blueprint, request
+
+jadwal_bp = Blueprint('jadwal_bp', __name__)
+
+@jadwal_bp.route('/jadwal', methods=['GET', 'POST'])
 
 def index():
     try:

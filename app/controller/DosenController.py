@@ -1,6 +1,10 @@
 from app.model.dosen import Dosen
 from app import db, response
-from flask import request
+from flask import Blueprint, request
+
+dosen_bp = Blueprint('dosen_bp', __name__)
+
+@dosen_bp.route('/dosen', methods=['GET', 'POST'])
 
 def index():
     try:

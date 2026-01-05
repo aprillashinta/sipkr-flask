@@ -1,6 +1,10 @@
 from app.model.kelas import Kelas
 from app import db, response
-from flask import request
+from flask import Blueprint, request
+
+kelas_bp = Blueprint('kelas_bp', __name__)
+
+@kelas_bp.route('/kelas', methods=['GET', 'POST'])
 
 def index():
     try:

@@ -1,6 +1,10 @@
 from app.model.ruangan import Ruangan
 from app import db, response
-from flask import request
+from flask import Blueprint, request
+
+ruangan_bp = Blueprint('ruangan_bp', __name__)
+
+@ruangan_bp.route('/ruangan', methods=['GET', 'POST'])
 
 def index():
     try:
