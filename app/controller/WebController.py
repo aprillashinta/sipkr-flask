@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session
-from app.controller import AuthController, DosenController, KelasController, JadwalController
+from app.controller import AuthController, DosenController, KelasController, JadwalController, RuanganController
 
 # Inisialisasi Blueprint dengan nama 'web'
 web = Blueprint('web', __name__)
@@ -106,3 +106,19 @@ def jadwal_index():
 @web.route('/jadwal/tambah', methods=['GET', 'POST'])
 def jadwal_create():
     return JadwalController.create()
+
+@web.route('/ruangan')
+def ruangan_index():
+    return RuanganController.index()
+
+@web.route('/ruangan/tambah', methods=['GET', 'POST'])
+def ruangan_create():
+    return RuanganController.create()
+
+@web.route('/ruangan/hapus/<id>', methods=['POST'])
+def ruangan_delete(id):
+    return RuanganController.delete(id)
+
+@web.route('/ruangan/edit/<id>', methods=['GET', 'POST'])
+def ruangan_edit(id):
+    return RuanganController.edit(id)

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Tambah Ruangan - SIPKR{% endblock %}
+{% block page_title %}Input Data Ruangan{% endblock %}
+
+{% block content %}
+<style>
+    /* CSS Persis Form Dosen */
+    .form-card { max-width: 600px; background: #fff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+    input, select { width: 100%; padding: 12px 16px; border: 1px solid #E2E8F0; border-radius: 8px; font-family: inherit; font-size: 14px; transition: .2s; }
+    input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1); }
+    .btn-group { display: flex; gap: 12px; margin-top: 30px; }
+    .btn-save { background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .btn-cancel { background: #F1F5F9; color: var(--muted); text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; }
+</style>
+
+<div class="form-card">
+    <form action="{{ url_for('web.ruangan_create') }}" method="POST">
+        
+        <div class="form-group">
+            <label>Nama Ruangan</label>
+            <input type="text" name="nama_ruang" placeholder="Contoh: Lab Komputer 1 / R.305" required>
+        </div>
+
+        <div class="form-group">
+            <label>Jenis Ruangan</label>
+            <select name="jenis">
+                <option value="Teori">Ruang Teori (Kelas Biasa)</option>
+                <option value="Laboratorium">Laboratorium</option>
+                <option value="Aula">Aula / Serbaguna</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Kapasitas (Orang)</label>
+            <input type="number" name="kapasitas" placeholder="Contoh: 40" required>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn-save">Simpan Ruangan</button>
+            <a href="{{ url_for('web.ruangan_index') }}" class="btn-cancel">Batal</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
