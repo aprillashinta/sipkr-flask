@@ -78,25 +78,16 @@ def kelas_index():
 # 2. CREATE - Form tambah kelas dan Proses simpan
 @web.route('/kelas/tambah', methods=['GET', 'POST'])
 def kelas_create():
-    if not session.get('user'):
-        return redirect(url_for('web.login'))
-        
     return KelasController.create()
 
 # 3. UPDATE - Form edit kelas dan Proses update
 @web.route('/kelas/edit/<int:id>', methods=['GET', 'POST'])
 def kelas_edit(id):
-    if not session.get('user'):
-        return redirect(url_for('web.login'))
-        
     return KelasController.edit(id)
 
 # 4. DELETE - Proses hapus kelas
 @web.route('/kelas/hapus/<int:id>', methods=['POST'])
 def kelas_delete(id):
-    if not session.get('user'):
-        return redirect(url_for('web.login'))
-        
     return KelasController.delete(id)
 
 @web.route('/jadwal')
@@ -106,6 +97,14 @@ def jadwal_index():
 @web.route('/jadwal/tambah', methods=['GET', 'POST'])
 def jadwal_create():
     return JadwalController.create()
+
+@web.route('/jadwal/edit/<id>', methods=['GET', 'POST'])
+def jadwal_edit(id):
+    return JadwalController.edit(id)
+
+@web.route('/jadwal/hapus/<id>', methods=['POST'])
+def jadwal_delete(id):
+    return JadwalController.delete(id)
 
 @web.route('/ruangan')
 def ruangan_index():
