@@ -5,162 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SIPKR{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
         :root {
-            /* === TEMA HITAM PROFESIONAL (Zinc Palette) === */
-            /* Bukan #000 murni, tapi hitam charcoal yang elegan */
-            --primary: #18181b;      /* Zinc-900 */
-            --primary-dark: #09090b; /* Zinc-950 (Hampir hitam pekat) */
-            
-            /* Background & Text */
-            --bg: #F3F4F6;           /* Abu-abu sangat muda (Cool Gray) */
-            --white: #ffffff;
-            --text: #111827;         /* Hitam soft untuk teks agar tidak sakit mata */
-            --muted: #6B7280;        /* Abu-abu medium untuk teks sekunder */
-            
-            --sidebar-w: 270px;
+            --primary: #009CFF;
+            --primary-dark: #007ACD; /* Tambahan warna untuk Hover */
+            --primary-light: #F3F6F9;
+            --bg-icon: #F3F6F9;
+            --bg-body: #F3F6F9;
+            --bg-sidebar: #FFFFFF;
+            --text-dark: #191C24;
+            --text-grey: #757575;
+            --sidebar-w: 250px;
             --header-h: 64px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: var(--bg); 
-            color: var(--text);
-            font-size: 14px;
-            -webkit-font-smoothing: antialiased; /* Font lebih tajam di Mac/iOS */
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-grey);
+            font-size: 15px;
         }
 
-        .app { display: flex; min-height: 100vh; }
+        a { text-decoration: none; }
 
-        /* ===== SIDEBAR ===== */
+        .app { display: flex; min-height: 100vh; width: 100%; }
+
         .sidebar {
             width: var(--sidebar-w);
-            /* Gradasi halus dari hitam charcoal ke hitam pekat */
-            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            left: 0; top: 0;
-            z-index: 10;
-            box-shadow: 4px 0 24px rgba(0,0,0,0.05); /* Shadow halus ke kanan */
+            background: var(--bg-sidebar);
+            display: flex; flex-direction: column;
+            position: fixed; height: 100vh;
+            left: 0; top: 0; z-index: 99;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
 
         .brand {
-            display: flex; align-items: center; gap: 14px;
-            padding: 24px;
-            /* Garis pemisah yang sangat tipis dan transparan */
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            height: var(--header-h);
+            display: flex; align-items: center; gap: 10px;
+            padding: 0 24px;
+            margin-bottom: 10px;
         }
+        .brand h1 { font-size: 20px; font-weight: 700; color: var(--primary); margin: 0; }
 
-        .brand img {
-            width: 40px; height: 40px; 
-            border-radius: 8px;
-            background: #fff; 
-            padding: 4px;
-            object-fit: contain;
-        }
+        .menu { padding: 10px 0; flex: 1; overflow-y: auto; }
 
-        .brand h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
-        .brand span { font-size: 11px; opacity: 0.6; font-weight: 400; display: block; margin-top: 2px;}
-
-        .menu { padding: 20px 14px; flex: 1; overflow-y: auto; }
-        
-        .menu-section {
-            margin: 20px 0 10px;
-            padding-left: 16px;
-            font-size: 10px;
+        .menu-header {
+            font-size: 13px;
+            color: var(--text-dark);
+            font-weight: 700;
+            padding: 10px 24px;
+            margin-top: 5px;
+            opacity: 0.6;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: rgba(255,255,255,0.4); /* Text section agak redup */
-            font-weight: 600;
         }
 
-        .menu a {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 16px;
-            margin-bottom: 4px;
-            border-radius: 8px;
-            color: #A1A1AA; /* Abu terang (Zinc-400) */
-            text-decoration: none;
+        .nav-link {
+            display: flex; align-items: center;            
+            margin: 2px 0;
+            padding: 8px 18px;
+            color: var(--text-grey);
             font-weight: 500;
-            transition: all 0.2s ease;
-            border: 1px solid transparent; /* Untuk menjaga layout saat hover border muncul */
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border-radius: 0 50px 50px 0; 
+            border-left: 5px solid transparent; 
         }
 
-        .menu a i { font-size: 20px; opacity: 0.8; }
+        .nav-link i {
+            width: 40px; height: 40px;
+            background: var(--bg-icon); 
+            color: var(--text-dark);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-size: 18px;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
 
-        /* Efek Hover & Active untuk tema Hitam */
-        .menu a:hover {
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--bg-body);
+        }
+        .nav-link:hover i {
+            background: var(--primary);
             color: #fff;
-            background: rgba(255,255,255,0.05);
         }
 
-        .menu a.active {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.1); /* Border halus */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Shadow agar pop-up */
+        .nav-link.active {
+            background: var(--primary-light); 
+            color: var(--primary);
+            border-left-color: var(--primary); 
         }
 
-        /* ===== MAIN ===== */
+        .nav-link.active i {
+            background: #FFFFFF; 
+            color: var(--primary);
+            border: 2px solid var(--primary-light);
+        }
+
         .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            margin-left: var(--sidebar-w);
+            flex: 1; margin-left: var(--sidebar-w);
+            display: flex; flex-direction: column;
             width: calc(100% - var(--sidebar-w));
         }
 
-        /* TOPBAR */
         .topbar {
             height: var(--header-h);
-            background: var(--white);
+            background: #fff; padding: 0 30px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 32px;
-            border-bottom: 1px solid #E5E7EB;
-            position: sticky; top: 0; z-index: 5;
+            position: sticky; top: 0; z-index: 50;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
 
-        .topbar .title { font-weight: 700; font-size: 18px; color: var(--primary); letter-spacing: -0.5px; }
+        .page-title { font-size: 18px; font-weight: 600; color: var(--primary); }
         
-        .user-profile {
-            display: flex; align-items: center; gap: 12px;
-            padding: 6px 12px;
-            border-radius: 30px;
-            border: 1px solid #F3F4F6;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .user-profile:hover { background: #F9FAFB; }
+        .profile-box { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; overflow: hidden; border: 1px solid #eee; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
         
-        .user-profile .avatar {
-            width: 32px; height: 32px; 
-            background: var(--primary); /* Avatar ikut tema sidebar */
-            color: #fff;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 600; font-size: 12px;
+        .content { padding: 30px; }
+
+        .btn-primary {
+            background: var(--primary); color: white;
+            padding: 8px 22px; border-radius: 6px; border: none;
+            cursor: pointer; font-size: 14px; font-weight: 500;
+            transition: background 0.3s ease; /* Animasi halus */
         }
-        .user-profile .role { font-size: 13px; color: var(--text); font-weight: 500; }
-        .user-profile i { font-size: 18px; color: var(--muted); }
 
-        /* CONTENT */
-        .content { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        /* PERBAIKAN: Menambahkan style khusus saat hover */
+        .btn-primary:hover {
+            background: var(--primary-dark); /* Menggunakan warna yang lebih gelap */
+            color: white;
+        }
 
-        /* Alert Box Styling (Flash Messages) */
         .alert {
-            padding: 16px; margin-bottom: 24px; border-radius: 8px;
-            font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px;
-            border: 1px solid transparent;
+            padding: 15px; margin-bottom: 24px; border-radius: 8px;
+            display: flex; align-items: center; gap: 10px; font-size: 14px;
         }
-        .alert-success { background: #ECFDF5; color: #065F46; border-color: #A7F3D0; }
-        .alert-error   { background: #FEF2F2; color: #991B1B; border-color: #FECACA; }
+        .alert-success { background: #d1e7dd; color: #0f5132; }
+        .alert-error { background: #f8d7da; color: #842029; }
     </style>
 </head>
 
@@ -169,86 +157,73 @@
 
     <aside class="sidebar">
         <div class="brand">
-            <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="SIPKR"> -->
-            <!-- <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="8" fill="#ffffff"/>
-              <path d="M12 12H19V19H12V12Z" fill="#18181b"/>
-              <path d="M21 12H28V19H21V12Z" fill="#18181b" fill-opacity="0.2"/>
-              <path d="M12 21H19V28H12V21Z" fill="#18181b" fill-opacity="0.2"/>
-              <path d="M21 21H28V28H21V21Z" fill="#18181b" fill-opacity="0.5"/>
-            </svg> -->
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="8" fill="#ffffff"/>
-              <path d="M20 8L10 12V18C10 24.5 14.5 30.5 20 32C25.5 30.5 30 24.5 30 18V12L20 8ZM20 26C16.69 26 14 23.31 14 20C14 16.69 16.69 14 20 14C23.31 14 26 16.69 26 20C26 23.31 23.31 26 20 26ZM21 17H19V21L22.5 23.1L23.25 21.82L20.5 20.18V17Z" fill="#18181b"/>
+              <rect width="40" height="40" rx="8" fill="#F3F6F9"/>
+              <path d="M20 8L10 12V18C10 24.5 14.5 30.5 20 32C25.5 30.5 30 24.5 30 18V12L20 8ZM20 26C16.69 26 14 23.31 14 20C14 16.69 16.69 14 20 14C23.31 14 26 16.69 26 20C26 23.31 23.31 26 20 26ZM21 17H19V21L22.5 23.1L23.25 21.82L20.5 20.18V17Z" fill="#009CFF"/>
             </svg>
-            <!-- <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="8" fill="#ffffff"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M26 14H14V17H26V14ZM14 26H26V23H14V26ZM14 21.5H22V18.5H14V21.5Z" fill="#18181b"/>
-            </svg> -->
-            <div>
-                <h1>SIPKR</h1>
-                <span>Sistem Penjadwalan</span>
-            </div>
+            <h1 style="margin-left: 10px;">SIPKR</h1>
         </div>
 
         <nav class="menu">
-            <a href="{{ url_for('web.dashboard') }}" class="active">
-                <i class="material-icons">dashboard</i> Dashboard
+            <a href="{{ url_for('web.dashboard') }}" 
+               class="nav-link {{ 'active' if 'dashboard' in request.endpoint else '' }}">
+                <i class="material-icons">dashboard</i> <span>Dashboard</span>
             </a>
 
-            <div class="menu-section">Master Data</div>
+            <div class="menu-header">Master Data</div>
 
-            <a href="{{ url_for('web.dosen_index') }}">
-                <i class="material-icons">school</i> Dosen
+            <a href="{{ url_for('web.dosen_index') }}" 
+               class="nav-link {{ 'active' if 'dosen' in request.endpoint else '' }}">
+                <i class="material-icons">school</i> <span>Dosen</span>
             </a>
-            <a href="{{ url_for('web.kelas_index') }}">
-                <i class="material-icons">class</i> Kelas
+            
+            <a href="{{ url_for('web.kelas_index') }}" 
+               class="nav-link {{ 'active' if 'kelas' in request.endpoint else '' }}">
+                <i class="material-icons">class</i> <span>Kelas</span>
             </a>
-            <a href="{{ url_for('web.ruangan_index') }}">
-                <i class="material-icons">meeting_room</i> Ruangan
+            
+            <a href="{{ url_for('web.ruangan_index') }}" 
+               class="nav-link {{ 'active' if 'ruangan' in request.endpoint else '' }}">
+                <i class="material-icons">meeting_room</i> <span>Ruangan</span>
             </a>
 
-            <div class="menu-section">Operasional</div>
+            <div class="menu-header">Operasional</div>
 
-            <a href="{{ url_for('web.jadwal_index') }}">
-                <i class="material-icons">calendar_today</i> Jadwal Kuliah
+            <a href="{{ url_for('web.jadwal_index') }}" 
+               class="nav-link {{ 'active' if 'jadwal' in request.endpoint else '' }}">
+                <i class="material-icons">calendar_today</i> <span>Jadwal</span>
             </a>
+            
+            <div class="menu-header">Akun</div>
 
-            <div class="menu-section">Akun</div>
-
-            <a href="#">
-                <i class="material-icons">settings</i> Pengaturan
+            <a href="#" class="nav-link">
+                <i class="material-icons">settings</i> <span>Pengaturan</span>
             </a>
-            <a href="#">
-                <i class="material-icons" style="color: #ef4444;">logout</i> <span style="color: #ef4444;">Keluar</span>
+            <a href="#" class="nav-link">
+                <i class="material-icons">logout</i> <span>Keluar</span>
             </a>
         </nav>
     </aside>
 
     <div class="main">
         <header class="topbar">
-            <div class="title">{% block page_title %}Dashboard{% endblock %}</div>
-            
-            <div class="user-profile">
-                <div class="avatar">AD</div>
-                <span class="role">Admin Akademik</span>
-                <i class="material-icons">expand_more</i>
+            <div class="page-title">{% block page_title %}Dashboard{% endblock %}</div>
+            <div class="profile-box">
+                <div class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=009CFF&color=fff" alt="Admin">
+                </div>
+                <span style="font-size:14px; color:#191C24; font-weight:500;">Admin Akademik</span>
             </div>
         </header>
 
         <section class="content">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert {{ 'alert-success' if category == 'success' else 'alert-error' }}">
-                            <i class="material-icons">{{ 'check_circle' if category == 'success' else 'error' }}</i>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
             {% block content %}
+            <div style="background:white; padding:30px; border-radius:8px; box-shadow:0 0 15px rgba(0,0,0,0.05);">
+                <h3 style="color:#009CFF;">Selamat Datang</h3>
+                <p>Pilih menu di sebelah kiri untuk mengelola data.</p>
+                <br>
+                <button class="btn-primary">Tombol Tes</button>
+            </div>
             {% endblock %}
         </section>
     </div>
