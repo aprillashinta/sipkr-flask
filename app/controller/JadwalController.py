@@ -11,11 +11,7 @@ jadwal_bp = Blueprint('jadwal_bp', __name__)
 
 def index():
     try:
-        # Ambil semua data jadwal
-        # SQLAlchemy akan otomatis melakukan join ke tabel Dosen, Kelas, Ruangan
         jadwal = Jadwal.query.all()
-        
-        # Kirim data ke template HTML
         return render_template('jadwal/index.html', data=jadwal)
     except Exception as e:
         # Jika error (misal tabel belum ada), cetak di terminal dan tampilkan pesan
@@ -41,7 +37,27 @@ def create():
             if bentrok_ruangan:
                 flash("Ruangan sudah terpakai di jam tersebut!", "danger")
                 return redirect(url_for('web.jadwal_create'))
+            
+            # --- TAMBAHAN: CEK BENTROK DOSEN ---
+            # Cek apakah Dosen sudah mengajar di tempat lain di jam yang sama
+            bentrok_dosen = Jadwal.query.filter_by(hari=hari, dosen_id=dosen_id).filter(
+                (Jadwal.jam_mulai < jam_selesai) & (Jadwal.jam_selesai > jam_mulai)
+            ).first()
+            
+            if bentrok_dosen:
+                flash("Dosen sudah ada jadwal mengajar di jam tersebut!", "danger")
+                return redirect(url_for('web.jadwal_create'))
 
+            # --- TAMBAHAN: CEK BENTROK KELAS ---
+            # Cek apakah Kelas ini sudah ada kuliah lain di jam yang sama
+            bentrok_kelas = Jadwal.query.filter_by(hari=hari, kelas_id=kelas_id).filter(
+                (Jadwal.jam_mulai < jam_selesai) & (Jadwal.jam_selesai > jam_mulai)
+            ).first()
+            
+            if bentrok_kelas:
+                flash("Kelas ini sudah ada jadwal kuliah di jam tersebut!", "danger")
+                return redirect(url_for('web.jadwal_create'))
+            
             # Simpan jika tidak bentrok
             baru = Jadwal(hari=hari, jam_mulai=jam_mulai, jam_selesai=jam_selesai, 
                           dosen_id=dosen_id, ruangan_id=ruangan_id, kelas_id=kelas_id)
@@ -91,11 +107,7 @@ def edit(id):
             return f"Gagal update: {str(e)}"
 
     # 4. Kirim semua data ke HTML
-    return render_template('jadwal/edit.html', 
-                           data=jadwal, 
-                           semua_dosen=list_dosen, 
-                           semua_kelas=list_kelas, 
-                           semua_ruang=list_ruangan)
+    return render_template('jadwal/edit.html', data=jadwal, semua_dosen=list_dosen, semua_kelas=list_kelas, semua_ruang=list_ruangan)
 
 def delete(id):
     try:
