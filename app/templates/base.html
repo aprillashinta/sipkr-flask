@@ -199,8 +199,9 @@
             <a href="#" class="nav-link">
                 <i class="material-icons">settings</i> <span>Pengaturan</span>
             </a>
-            <a href="#" class="nav-link">
-                <i class="material-icons">logout</i> <span>Keluar</span>
+            <a href="{{ url_for('web.logout') }}" class="nav-link">
+                <i class="material-icons">logout</i> 
+                <span>Logout</span>
             </a>
         </nav>
     </aside>
