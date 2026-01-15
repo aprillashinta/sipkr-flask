@@ -35,7 +35,7 @@ def create():
             ).first()
             
             if bentrok_ruangan:
-                flash("Ruangan sudah terpakai di jam tersebut!", "danger")
+                flash("Ruangan sudah terpakai di jam tersebut!", "error")
                 return redirect(url_for('web.jadwal_create'))
             
             # --- TAMBAHAN: CEK BENTROK DOSEN ---
