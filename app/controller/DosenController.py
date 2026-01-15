@@ -14,7 +14,7 @@ def index():
         return render_template('dosen/index.html', data=dosen_list)
     except Exception as e:
         print(e)
-        flash("Gagal memuat data dosen", "danger")
+        flash("Gagal memuat data dosen", "error")
         return redirect(url_for('web.dashboard'))
 
 def transform(dosen):
@@ -57,6 +57,9 @@ def create():
         dosen_baru = Dosen(nidn=nidn, nama=nama, phone=phone, alamat=alamat)
         db.session.add(dosen_baru)
         db.session.commit()
+
+        flash('Dosen berhasil ditambahkan!', 'success')
+
         return redirect(url_for('web.dosen_index'))
     
     # Menampilkan form HTML (Jangan pakai response.error lagi!)
@@ -70,7 +73,7 @@ def delete(id):
         flash('Dosen berhasil dihapus!', 'success')
     except Exception as e:
         db.session.rollback()
-        flash('Gagal menghapus data.', 'danger')
+        flash('Gagal menghapus data.', 'error')
         
     return redirect(url_for('web.dosen_index'))
 

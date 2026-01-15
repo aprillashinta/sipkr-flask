@@ -17,7 +17,27 @@
     .btn-edit { color: #F59E0B; background: #FEF3C7; }
     .btn-delete { color: #EF4444; background: #FEE2E2; }
     .btn-icon:hover { opacity: 0.8; transform: scale(1.1); }
+
+    .alert { padding: 14px 18px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; display: flex; align-items: flex-start; gap: 12px; animation: slideDown 0.3s ease-out; }
+    .alert-error { background-color: #FEF2F2; border: 1px solid #FEE2E2; color: #991B1B; }
+    .alert-success { background-color: #F0FDF4; border: 1px solid #DCFCE7; color: #166534; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+          {% if category == 'error' %}
+            <i class="material-icons" style="font-size: 20px; color: #EF4444;">error</i>
+          {% else %}
+            <i class="material-icons" style="font-size: 20px; color: #22C55E;">check_circle</i>
+          {% endif %}
+          <div><strong>{{ 'Perhatian!' if category == 'error' else 'Berhasil!' }}</strong> {{ message }}</div>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 <a href="{{ url_for('web.dosen_create') }}" class="btn-add">
     <i class="material-icons">add</i> Tambah Dosen Baru
