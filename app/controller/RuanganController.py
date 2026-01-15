@@ -29,7 +29,7 @@ def create():
             return redirect(url_for('web.ruangan_index'))
         except Exception as e:
             db.session.rollback()
-            flash(f"Error: {str(e)}", 'danger')
+            flash(f"Error: {str(e)}", 'error')
 
     return render_template('ruangan/create.html')
 
@@ -49,7 +49,7 @@ def edit(id):
     ruangan = Ruangan.query.get(id)
     
     if not ruangan:
-        flash('Data ruangan tidak ditemukan!', 'danger')
+        flash('Data ruangan tidak ditemukan!', 'error')
         return redirect(url_for('web.ruangan_index'))
 
     if request.method == 'POST':
