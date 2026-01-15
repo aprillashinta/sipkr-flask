@@ -16,6 +16,21 @@
     .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 </style>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+          {% if category == 'error' %}
+            <i class="material-icons" style="font-size: 20px; color: #EF4444;">error</i>
+          {% else %}
+            <i class="material-icons" style="font-size: 20px; color: #22C55E;">check_circle</i>
+          {% endif %}
+          <div><strong>{{ 'Perhatian!' if category == 'error' else 'Berhasil!' }}</strong> {{ message }}</div>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 <div class="form-card">
     <form action="{{ url_for('web.kelas_edit', id=data.id) }}" method="POST">
         
