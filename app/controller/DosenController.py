@@ -53,6 +53,12 @@ def create():
         nama = request.form.get('nama')
         phone = request.form.get('phone')
         alamat = request.form.get('alamat')
+
+        existing_dosen = Dosen.query.filter_by(nidn=nidn).first()
+        
+        if existing_dosen:
+            flash('Gagal menambahkan! NIDN sudah terdaftar.', 'error')
+            return render_template('dosen/create.html', form_data=request.form)
         
         dosen_baru = Dosen(nidn=nidn, nama=nama, phone=phone, alamat=alamat)
         db.session.add(dosen_baru)
@@ -81,9 +87,16 @@ def edit(id):
     dosen = Dosen.query.get_or_404(id)
     
     if request.method == 'POST':
+        nidn_baru = request.form.get('nidn')
+        
+        cek_bentrok = Dosen.query.filter(Dosen.nidn == nidn_baru, Dosen.id != id).first()
+        
+        if cek_bentrok:
+            flash('Gagal update! NIDN sudah digunakan oleh dosen lain.', 'error')
+            return render_template('dosen/edit.html', dosen=dosen)
+        
         try:
-            # Ambil data dari form
-            dosen.nidn = request.form.get('nidn')
+            dosen.nidn = nidn_baru
             dosen.nama = request.form.get('nama')
             dosen.phone = request.form.get('phone')
             dosen.alamat = request.form.get('alamat')
