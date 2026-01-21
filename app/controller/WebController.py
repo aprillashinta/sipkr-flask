@@ -20,7 +20,7 @@ def login_required(f):
 
 @web.route('/')
 def index():
-    return 'SIPKR Flask is running'
+    return redirect(url_for('web.login'))
 
 
 @web.route('/login', methods=['GET', 'POST'])
