@@ -2,28 +2,162 @@
 {% block title %}Dashboard | SIPKR{% endblock %}
 
 {% block content %}
-<h1>Dashboard</h1>
-<p>Selamat datang di Sistem Informasi Penjadwalan Kelas & Ruangan.</p>
+<div class="container-fluid py-3">
 
-<div class="cards">
-  <div class="card">Total Dosen</div>
-  <div class="card">Total Kelas</div>
-  <div class="card">Total Ruangan</div>
-  <div class="card">Jadwal Aktif</div>
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+    <div>
+      <h3 class="fw-bold mb-1">Dashboard</h3>
+      <p class="text-muted mb-0">Ringkasan Sistem Informasi Penjadwalan Kelas & Ruangan (SIPKR)</p>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('web.jadwal_create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Tambah Jadwal
+      </a>
+      <a href="{{ url_for('web.jadwal_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-calendar3 me-1"></i> Lihat Jadwal
+      </a>
+    </div>
+  </div>
+
+  <!-- Stat Cards (Efficient) -->
+  {% set stats = [
+    {'label':'Total Dosen',   'value': total_dosen,   'icon':'bi-person-badge',  'color':'primary', 'desc':'Jumlah dosen terdaftar'},
+    {'label':'Total Kelas',   'value': total_kelas,   'icon':'bi-journal-text',  'color':'success', 'desc':'Jumlah kelas/mata kuliah'},
+    {'label':'Total Ruangan', 'value': total_ruangan, 'icon':'bi-building',      'color':'warning', 'desc':'Jumlah ruangan tersedia'},
+    {'label':'Jadwal Aktif',  'value': jadwal_aktif,  'icon':'bi-calendar-check','color':'danger',  'desc':'Jumlah jadwal berjalan'}
+  ] %}
+
+  <div class="row g-3 mb-4">
+    {% for s in stats %}
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="text-muted small fw-semibold">{{ s.label }}</div>
+              <div class="fs-3 fw-bold">{{ s.value }}</div>
+            </div>
+
+            <div class="bg-{{ s.color }} bg-opacity-10 text-{{ s.color }} rounded-3 p-3">
+              <i class="bi {{ s.icon }} fs-3"></i>
+            </div>
+          </div>
+
+          <div class="mt-3 small text-muted">{{ s.desc }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Content -->
+  <div class="row g-3">
+    <!-- Table -->
+    <div class="col-12 col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+          <div>
+            <h6 class="fw-bold mb-0">Jadwal Hari Ini</h6>
+            <small class="text-muted">Ringkasan jadwal yang tampil pada dashboard</small>
+          </div>
+          <a href="{{ url_for('web.jadwal_index') }}" class="btn btn-sm btn-outline-secondary">Lihat Semua</a>
+        </div>
+
+        <div class="card-body pt-0">
+          <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Jam</th>
+                  <th>Mata Kuliah</th>
+                  <th>Dosen</th>
+                  <th>Ruangan</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Placeholder -->
+                <tr>
+                  <td>08:00 - 10:00</td>
+                  <td>Sistem Informasi</td>
+                  <td>Dr. A. Wijaya</td>
+                  <td>Lab 1</td>
+                  <td><span class="badge bg-primary">Berjalan</span></td>
+                </tr>
+                <tr>
+                  <td>10:00 - 12:00</td>
+                  <td>Basis Data</td>
+                  <td>Yuni Safitri</td>
+                  <td>R. 203</td>
+                  <td><span class="badge bg-success">Akan Mulai</span></td>
+                </tr>
+                <tr>
+                  <td>13:00 - 15:00</td>
+                  <td>Jaringan Komputer</td>
+                  <td>Andi Prasetyo</td>
+                  <td>R. 105</td>
+                  <td><span class="badge bg-secondary">Selesai</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-info mt-3 mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            Tabel jadwal masih placeholder, bisa dibuat dinamis dari database.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      {% set quick_actions = [
+        {'text':'Kelola Dosen',   'url': url_for('web.dosen_index'),   'icon':'bi-person-badge',  'color':'primary'},
+        {'text':'Kelola Kelas',   'url': url_for('web.kelas_index'),   'icon':'bi-journal-text',  'color':'success'},
+        {'text':'Kelola Ruangan', 'url': url_for('web.ruangan_index'), 'icon':'bi-building',      'color':'warning'},
+        {'text':'Kelola Jadwal',  'url': url_for('web.jadwal_index'),  'icon':'bi-calendar-check','color':'danger'}
+      ] %}
+
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-header bg-white border-0 py-3">
+          <h6 class="fw-bold mb-0">Quick Action</h6>
+          <small class="text-muted">Akses cepat menu utama</small>
+        </div>
+        <div class="card-body d-grid gap-2">
+          {% for q in quick_actions %}
+          <a href="{{ q.url }}" class="btn btn-outline-{{ q.color }} text-start">
+            <i class="bi {{ q.icon }} me-2"></i> {{ q.text }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-0 py-3">
+          <h6 class="fw-bold mb-0">Aktivitas Terakhir</h6>
+          <small class="text-muted">Catatan perubahan terbaru</small>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0">
+              <span class="badge bg-primary me-2">Dosen</span> Admin menambahkan dosen baru
+              <div class="small text-muted">Baru saja</div>
+            </li>
+            <li class="list-group-item px-0">
+              <span class="badge bg-success me-2">Kelas</span> Update kelas “Basis Data”
+              <div class="small text-muted">10 menit lalu</div>
+            </li>
+            <li class="list-group-item px-0">
+              <span class="badge bg-warning text-dark me-2">Ruangan</span> Ruangan “Lab 1” ditambahkan
+              <div class="small text-muted">1 jam lalu</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
-
-<style>
-.cards{
-margin-top:20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:16px
-}
-.card{
-background:#fff;padding:20px;
-border-radius:12px;
-box-shadow:0 6px 20px rgba(0,0,0,.08);
-font-weight:600
-}
-</style>
 {% endblock %}
