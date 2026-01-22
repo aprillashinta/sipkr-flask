@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.model.kelas import Kelas
 from app import db
+from sqlalchemy.exc import IntegrityError
 
 kelas_bp = Blueprint('kelas_bp', __name__)
 
@@ -104,9 +105,20 @@ def delete(id):
             flash('Data tidak ditemukan', 'warning')
             
         return redirect(url_for('web.kelas_index'))
-        
+
+    except IntegrityError:
+        db.session.rollback()
+        flash(
+            'Gagal menghapus data karena masih digunakan pada jadwal.',
+            'danger'
+        )
+
     except Exception as e:
         db.session.rollback()
-        # Error biasanya karena data ini masih dipakai di Jadwal
-        flash(f"Gagal hapus (Mungkin sedang dipakai di Jadwal): {str(e)}", 'danger')
-        return redirect(url_for('web.kelas_index'))
+        print(e)
+        flash(
+            'Terjadi kesalahan saat menghapus data.',
+            'danger'
+        )
+
+    return redirect(url_for('web.kelas_index'))

@@ -106,13 +106,33 @@
         </header>
 
         <!-- FLASH ALERT -->
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="alert-box">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category=='success' else 'danger' }}
+                    alert-dismissible fade show d-flex align-items-center px-3 py-2"
+             role="alert">
+          <div class="flex-grow-1 me-2">
+            {{ message }}
+          </div>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %} -->
+
+
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <div class="alert-box">
               {% for category, message in messages %}
                 <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
                   {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <button type="button" class="btn-close pe-4" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
               {% endfor %}
             </div>
@@ -142,7 +162,7 @@
       setTimeout(() => {
         const bsAlert = new bootstrap.Alert(alert);
         bsAlert.close();
-      }, 3000);
+      }, 5000);
     });
   });
 </script>
