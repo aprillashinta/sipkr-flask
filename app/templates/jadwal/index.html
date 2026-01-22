@@ -24,7 +24,7 @@
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
           <div class="alert alert-{{ category }}">
@@ -37,7 +37,26 @@
           </div>
         {% endfor %}
       {% endif %}
-    {% endwith %}
+    {% endwith %} -->
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash flash-{{ 'error' if category == 'error' else 'success' }}">
+        {% if category == 'error' %}
+          <i class="material-icons" style="font-size: 20px;">error</i>
+        {% else %}
+          <i class="material-icons" style="font-size: 20px;">check_circle</i>
+        {% endif %}
+        <div>
+          <strong>{{ 'Perhatian!' if category == 'error' else 'Berhasil!' }}</strong>
+          {{ message }}
+        </div>
+        <span class="close" onclick="this.parentElement.style.display='none'">×</span>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %} -->
+
 
 <a href="{{ url_for('web.jadwal_create') }}" class="btn-add">
     <i class="material-icons">add</i> Buat Jadwal Baru

@@ -15,7 +15,7 @@
     .btn-cancel { background: #F1F5F9; color: var(--muted); text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; }
 </style>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
       <div class="alert alert-{{ category }}">
@@ -28,7 +28,7 @@
       </div>
     {% endfor %}
   {% endif %}
-{% endwith %}
+{% endwith %} -->
 
 <div class="form-card">
     <form action="{{ url_for('web.dosen_create') }}" method="POST">
