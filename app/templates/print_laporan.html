@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Rekapitulasi Jadwal Kuliah</title>
+    <style>
+        /* --- RESET & FONT --- */
+        body {
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* --- HEADER LAPORAN --- */
+        .header-laporan {
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* --- TABLE STYLING --- */
+        .tabel-jadwal {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #000; /* Border luar tebal */
+            table-layout: fixed; /* Lebar kolom dikunci rata */
+        }
+
+        .tabel-jadwal th, .tabel-jadwal td {
+            border: 1px solid #000; /* Border sel tipis hitam */
+            padding: 2px;
+            text-align: center;
+            vertical-align: middle;
+            overflow: hidden;
+            white-space: nowrap; /* Teks tidak turun baris jika kepanjangan */
+            text-overflow: ellipsis; /* ... jika kepanjangan */
+        }
+
+        /* Header Kolom (Jam & Nama Ruang) */
+        .tabel-jadwal th {
+            background-color: #BDD7EE; /* Biru muda mirip Excel */
+            color: #000;
+            font-weight: bold;
+            height: 30px;
+            font-size: 10px;
+        }
+
+        /* Kolom Hari (Vertikal) */
+        .col-hari {
+            width: 25px;
+            background-color: #BDD7EE;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        /* Kolom Jam */
+        .col-jam {
+            width: 60px;
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+
+        /* Sel Terisi (Warna Kuning Stabilo) */
+        .filled {
+            background-color: #FFD966 !important; /* Warna kuning jadwal */
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Garis Pemisah Antar Hari (Tebal) */
+        .separator {
+            border-bottom: 2px solid #000 !important;
+        }
+
+        /* --- FOOTER / LEGEND --- */
+        .footer-note {
+            margin-top: 15px;
+            font-size: 10px;
+            font-style: italic;
+        }
+        .footer-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .bg-teori { background-color: #FFD966; }
+        .bg-praktek { background-color: #A9D08E; }
+
+        /* --- SETTING PRINT --- */
+        @media print {
+            @page {
+                size: A4 landscape; /* Kertas Mendatar */
+                margin: 5mm;        /* Margin tipis */
+            }
+            body {
+                padding: 0;
+                -webkit-print-color-adjust: exact; /* Paksa cetak warna background */
+                print-color-adjust: exact;
+            }
+            .no-print {
+                display: none !important; /* Sembunyikan tombol saat print */
+            }
+        }
+
+        /* --- TOMBOL CETAK (UI) --- */
+        .btn-print {
+            background: #212529;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-print:hover { background: #000; }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button onclick="window.print()" class="btn-print">
+            🖨️ Cetak / Simpan PDF
+        </button>
+    </div>
+
+    <div class="header-laporan">
+        REKAPITULASI PENGGUNAAN RUANG KULIAH DAN LAB<br>
+        FAKULTAS ILMU KOMPUTER - UNIVERSITAS DUTA BANGSA SURAKARTA<br>
+        SEMESTER GANJIL TAHUN AKADEMIK 2025/2026
+    </div>
+
+    <table class="tabel-jadwal">
+        <thead>
+            <tr>
+                <th style="width: 30px;">HARI</th>
+                <th style="width: 70px;">JAM</th>
+                {% for r in ruangan_list %}
+                    <th title="{{ r.nama_ruang }}">
+                        {{ r.nama_ruang }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in days %}
+                {% for time in time_slots %}
+                <tr class="{{ 'separator' if loop.last else '' }}">
+                    
+                    {% if loop.first %}
+                        <td rowspan="{{ time_slots|length }}" class="col-hari">
+                            {{ day }}
+                        </td>
+                    {% endif %}
+                    
+                    <td class="col-jam">{{ time }}</td>
+
+                    {% for r in ruangan_list %}
+                        {% set isi = matrix[day][time][r.nama_ruang] %}
+                        <td class="{{ 'filled' if isi else '' }}">
+                            {{ isi|safe }}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer-note">
+        <strong>Keterangan:</strong><br>
+        <span class="footer-box bg-teori"></span> Jadwal Terisi (Teori/Praktek) &nbsp;&nbsp;
+        <br><br>
+        NB:<br>
+        1. Tulis menggunakan <strong>BOLPOIN</strong> apabila pergantian jadwal PERMANEN.<br>
+        2. Tulis menggunakan <strong>PENSIL</strong> apabila pergantian jadwal SEMENTARA.<br>
+        3. Jangan lupa dikasih Tanggal :)
+    </div>
+
+</body>
+</html>

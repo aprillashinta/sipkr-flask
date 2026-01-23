@@ -119,3 +119,89 @@ def delete(id):
         return redirect(url_for('web.jadwal_index'))
     except Exception as e:
         return f"Error: {str(e)}"
+    
+# --- FITUR CETAK LAPORAN ---
+@jadwal_bp.route('/cetak-laporan', methods=['GET'])
+@staticmethod
+def cetak_laporan():
+        try:
+            # 1. Ambil Data
+            data_jadwal = Jadwal.query.all()
+            data_ruangan = Ruangan.query.all()
+
+            # 2. UPDATE: Slot Waktu dibuat PER JAM (07.00 s/d 22.00)
+            # Format: (Jam Mulai, Jam Selesai)
+            time_slots_data = [
+                ("07.00", "08.00"), ("08.00", "09.00"), ("09.00", "10.00"),
+                ("10.00", "11.00"), ("11.00", "12.00"), ("12.00", "13.00"),
+                ("13.00", "14.00"), ("14.00", "15.00"), ("15.00", "16.00"),
+                ("16.00", "17.00"), ("17.00", "18.00"), ("18.00", "19.00"),
+                ("19.00", "20.00"), ("20.00", "21.00"), ("21.00", "22.00")
+            ]
+            
+            # Buat list string untuk header HTML (07.00-08.00, dst)
+            time_slots_view = [f"{s}-{e}" for s, e in time_slots_data]
+            
+            days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+
+            # 3. Buat Matrix Kosong
+            matrix = {}
+            for day in days:
+                matrix[day] = {}
+                for s, e in time_slots_data:
+                    key = f"{s}-{e}"
+                    matrix[day][key] = {}
+                    for ruang in data_ruangan:
+                        matrix[day][key][ruang.nama_ruang] = None 
+
+            # 4. Logic Mapping Data (Tetap Pakai Logic Overlap Pintar)
+            for j in data_jadwal:
+                if not j.ruangan or not j.kelas: continue
+                
+                hari_db = j.hari.capitalize() 
+                if hari_db not in days: continue
+
+                # Helper konversi jam
+                def to_float(t):
+                    try:
+                        return float(t.strftime("%H.%M"))
+                    except:
+                        return float(str(t)[:5].replace(':', '.'))
+
+                j_start = to_float(j.jam_mulai)
+                j_end = to_float(j.jam_selesai)
+                
+                # Cek overlap
+                for s_str, e_str in time_slots_data:
+                    slot_start = float(s_str)
+                    slot_end = float(e_str)
+                    
+                    # LOGIKA: Jika jadwal overlap dengan jam ini
+                    if j_start < slot_end and j_end > slot_start:
+                        
+                        key = f"{s_str}-{e_str}"
+                        nama_ruang = j.ruangan.nama_ruang
+                        
+                        # TAMPILAN: Kode MK (Atas) & Dosen (Bawah)
+                        # Contoh: SI201 (RUD)
+                        
+                        # Ambil Kode MK (misal 6 huruf)
+                        kode_mk = j.kelas.nama_mk[:15] # Sesuaikan panjangnya
+                        
+                        # Ambil Inisial Dosen (3 huruf kapital)
+                        dosen = "".join([x[0] for x in j.dosen.nama.split()]).upper()[:3]
+
+                        if hari_db in matrix and key in matrix[hari_db]:
+                            # Gunakan <br> agar turun baris
+                            matrix[hari_db][key][nama_ruang] = f"{kode_mk}<br>({dosen})"
+
+            # 5. Render
+            return render_template('print_laporan.html', 
+                                   matrix=matrix, 
+                                   ruangan_list=data_ruangan, 
+                                   days=days, 
+                                   time_slots=time_slots_view)
+                                   
+        except Exception as e:
+            print(f"ERROR: {e}")
+            return f"Error: {str(e)}"

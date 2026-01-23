@@ -6,13 +6,42 @@
 {% block content %}
 <style>
     .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 24px; }
-    .btn-add { background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px; transition: .2s; }
-    .btn-add:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    
+    /* --- CSS BARU: Container Tombol Berseberangan --- */
+    .header-actions { 
+        display: flex; 
+        justify-content: space-between; /* Mendorong satu ke kiri, satu ke kanan */
+        align-items: center;
+        margin-bottom: 20px; 
+    }
+    
+    /* Gaya Dasar Tombol */
+    .btn-base { 
+        color: #fff; 
+        padding: 10px 20px; 
+        border-radius: 8px; 
+        text-decoration: none; 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 8px; 
+        font-size: 14px; 
+        transition: .2s; 
+        border: none; 
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .btn-base:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    /* Warna Tombol */
+    .btn-add { background: var(--primary); } /* Biru (Sesuai tema Anda) */
+    .btn-print { background: #10B981; }      /* Hijau */
+    /* ------------------------------------------------ */
+
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th { text-align: left; padding: 12px 16px; border-bottom: 2px solid #F1F5F9; color: var(--muted); font-size: 13px; text-transform: uppercase; }
     td { padding: 16px; border-bottom: 1px solid #F1F5F9; font-size: 14px; }
     .badge-id { background: #E0E7FF; color: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 12px; }
-    .actions { display: flex; gap: 10px; justify-content: center; } /* Center action buttons */
+    .actions { display: flex; gap: 10px; justify-content: center; } 
     .btn-icon { border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: .2s; }
     .btn-edit { color: #F59E0B; background: #FEF3C7; }
     .btn-delete { color: #EF4444; background: #FEE2E2; }
@@ -39,12 +68,20 @@
       {% endif %}
     {% endwith %}
 
-<a href="{{ url_for('web.jadwal_create') }}" class="btn-add">
-    <i class="material-icons">add</i> Buat Jadwal Baru
-</a>
+<div class="header-actions">
+    
+    <a href="{{ url_for('web.jadwal_create') }}" class="btn-base btn-add">
+        <i class="material-icons">add</i> Buat Jadwal Baru
+    </a>
 
+    <a href="{{ url_for('web.cetak_laporan') }}" target="_blank" class="btn-base btn-print">
+        <i class="material-icons">print</i> Cetak Laporan
+    </a>
+
+</div>
 <div class="card">
-    <div style="overflow-x: auto;"> <table>
+    <div style="overflow-x: auto;"> 
+        <table>
             <thead>
                 <tr>
                     <th width="20%">WAKTU</th>

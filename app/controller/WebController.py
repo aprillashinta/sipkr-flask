@@ -148,3 +148,8 @@ def ruangan_delete(id):
 @login_required
 def ruangan_edit(id):
     return RuanganController.edit(id)
+
+@web.route('/jadwal/cetak-laporan')
+@login_required
+def cetak_laporan():
+    return JadwalController.cetak_laporan()
