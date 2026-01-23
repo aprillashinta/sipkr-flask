@@ -24,7 +24,7 @@
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
       <div class="alert alert-{{ category }}">
@@ -37,7 +37,7 @@
       </div>
     {% endfor %}
   {% endif %}
-{% endwith %}
+{% endwith %} -->
 
 <a href="{{ url_for('web.dosen_create') }}" class="btn-add">
     <i class="material-icons">add</i> Tambah Dosen Baru
